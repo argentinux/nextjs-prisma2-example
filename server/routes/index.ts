@@ -1,10 +1,10 @@
 import express from 'express'
-import getEventsRoutes from './events'
+import getListRoutes from './list'
 
 export default function getRoutes() {
   const router = express.Router()
 
-  router.use('/events', getEventsRoutes())
+  router.use('/lists', getListRoutes())
 
   return router
 }

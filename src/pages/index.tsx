@@ -1,28 +1,30 @@
 import { NextPage, GetServerSideProps } from 'next'
-
-type Event = {
-  name: string
-  date: string
-  description: string
-}
+import Link from 'next/link'
+import { List } from 'src/types'
 
 interface HomeProps {
-  events: Event[]
+  lists: List[]
 }
 
-const Home: NextPage<HomeProps> = ({ events }) => {
+const Home: NextPage<HomeProps> = ({ lists }) => {
   return (
     <>
-      <h1>Events from server</h1>
-      {JSON.stringify(events)}
+      <h1>All Lists</h1>
+      {lists.map((list) => (
+        <div key={list.id}>
+          <Link href={`/list/${list.id}`}>
+            <a>{list.name}</a>
+          </Link>
+        </div>
+      ))}
     </>
   )
 }
 
 export const getServerSideProps: GetServerSideProps<HomeProps> = async (_ctx) => {
-  const data = await fetch('http://localhost:3000/api/events')
-  const events: Event[] = await data.json()
-  return { props: { events } }
+  const data = await fetch('http://localhost:3000/api/lists')
+  const lists: List[] = await data.json()
+  return { props: { lists } }
 }
 
 export default Home
